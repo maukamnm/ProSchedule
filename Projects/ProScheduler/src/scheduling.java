@@ -4,9 +4,9 @@ public interface scheduling {
 
 	ArrayList <Appointment>appts = new ArrayList<>();
 	
-	public void removeAppointment(int index);
+	public void removeAppointment();
 	
-	public void changeAppointment(String fName, String lName, long date, String time, String day, int index);
+	public void changeAppointment();
 	
 	public void deleteUser();
 	
@@ -14,7 +14,9 @@ public interface scheduling {
 	
 	public void editUser();
 
-	void addAppointment(String fName, String lName, long date, String date2, String day);
+	public void addAppointment();
 	
+//	String fName, String lName, long date, String time, String day, int index
+//	String fName, String lName, long date, long time, String day
 	
 }
