@@ -10,9 +10,9 @@ private long Student_ID;
 private String Student_flname;
 private String FL_instructor_ID;
 
-
- 
-public Appointment() { }
+Appointment() {
+	
+}
 
 public Appointment(String fName, String lName, long date, String day, long time) {
 	super();
