@@ -1,0 +1,77 @@
+DROP TABLE IF EXISTS `Flight_instructor`.`SchedulePro`;
+DROP TABLE IF EXISTS `Student`.`SchedulePro`;
+DROP TABLE IF EXISTS `Plane`.`SchedulePro`;
+DROP TABLE IF EXISTS `Appointment`.`SchedulePro`;
+DROP TABLE IF EXISTS `FL_availability`.`SchedulePro`;
+DROP TABLE IF EXISTS `ST_availability`.`SchedulePro`;
+
+DROP DATABASE IF EXISTS `SchedulePro`;
+
+SET FOREIGN_KEY_CHECKS = 0;
+CREATE DATABASE `SchedulePro` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `SchedulePro`;
+
+CREATE TABLE `Flight_instructor` (
+  `FL_instructor_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `FL_username` varchar(40) NOT NULL,
+  `FL_password` varchar(45) NOT NULL,
+   `FL_fname` varchar(25) NOT NULL,
+    `FL_lname` varchar(25) NOT NULL,
+  `FL_phone` varchar(10) NOT NULL,
+  `FL_email` varchar(50) NOT NULL,
+  `FL_info` varchar(200),
+  `FL_date_of_creation`timestamp,
+  PRIMARY KEY (`FL_instructor_ID`),
+  UNIQUE KEY `FL_username_UNIQUE` (`FL_username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `Student` (
+  `Student_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `Student_username` varchar(45) NOT NULL,
+  `Student_password` varchar(45) NOT NULL,
+  `Student_fname` varchar(25) NOT NULL,
+   `Student_lname` varchar(25) NOT NULL,
+  `Student_phone` varchar(10) NOT NULL,
+  `Student_email` varchar(50) NOT NULL,
+  `Student_info` varchar(200),
+   `Student_date_of_creation`timestamp,
+  PRIMARY KEY (`Student_ID`),
+  UNIQUE KEY `Student_username_UNIQUE` (`Student_username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `Appointment` (
+  `Appointment_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `Lesson_type` varchar(15) NOT NULL,
+  `Student_ID` varchar(45) NOT NULL,
+  `Student_fname` varchar(25) NOT NULL,
+  `Student_lname` varchar(25) NOT NULL,
+  `FL_instructor_ID` varchar(45) NOT NULL,
+  `FL_fname` varchar(25) NOT NULL,
+  `FL_lname` varchar(25) NOT NULL,
+  PRIMARY KEY (`Appointment_ID`),
+  KEY `fk_Student_ID_idx` (`Student_ID`),
+  KEY `fk_FL_instructor_ID_idx` (`FL_instructor_ID`),
+  CONSTRAINT `fk_Appointment_Student_ID` FOREIGN KEY (`Student_ID`) REFERENCES `Student` (`Student_ID`),
+  CONSTRAINT `fk_Appointment_FL_instructor_ID` FOREIGN KEY (`FL_instructor_ID`) REFERENCES `Flight_instructor` (`FL_instructor_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `ST_availability` (
+  `Student_ID` varchar(45) NOT NULL,
+  `Student_fname` varchar(25) NOT NULL,
+  `Student_lname` varchar(25) NOT NULL,
+  PRIMARY KEY (`Appointment_ID`),
+  KEY `fk_Student_ID_idx` (`Student_ID`),
+  CONSTRAINT `fk_location_contact` FOREIGN KEY (`contact_id`) REFERENCES `contact` (`contact_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `FL_availability` (
+  `FL_instructor_ID` varchar(45) NOT NULL,
+  `FL_fname` varchar(25) NOT NULL,
+  `FL_lname` varchar(25) NOT NULL,
+  PRIMARY KEY (`Appointment_ID`),
+  KEY `fk_FL_instructor_ID_idx` (`FL_instructor_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table contact
+--
