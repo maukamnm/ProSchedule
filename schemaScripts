@@ -39,39 +39,92 @@ CREATE TABLE `Student` (
   UNIQUE KEY `Student_username_UNIQUE` (`Student_username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE `Plane` (
+ `Plane_ID` int unsigned NOT NULL AUTO_INCREMENT,
+  `Tail_number` varchar(25) NOT NULL,
+  `Plane_booked` varchar(100),
+   `Plane_creation`timestamp,
+  PRIMARY KEY (`Plane_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 CREATE TABLE `Appointment` (
   `Appointment_ID` int unsigned NOT NULL AUTO_INCREMENT,
   `Lesson_type` varchar(15) NOT NULL,
-  `Student_ID` varchar(45) NOT NULL,
+  `Student_ID`  int unsigned NOT NULL,
   `Student_fname` varchar(25) NOT NULL,
   `Student_lname` varchar(25) NOT NULL,
-  `FL_instructor_ID` varchar(45) NOT NULL,
+  `FL_instructor_ID` int unsigned NOT NULL,
   `FL_fname` varchar(25) NOT NULL,
   `FL_lname` varchar(25) NOT NULL,
+  `Plane_ID` int unsigned NOT NULL,
+  `Date_Time` varchar(25) NOT NULL,
   PRIMARY KEY (`Appointment_ID`),
+  KEY `fk_Plane_ID_idx` (`Plane_ID`),
   KEY `fk_Student_ID_idx` (`Student_ID`),
-  KEY `fk_FL_instructor_ID_idx` (`FL_instructor_ID`),
-  CONSTRAINT `fk_Appointment_Student_ID` FOREIGN KEY (`Student_ID`) REFERENCES `Student` (`Student_ID`),
-  CONSTRAINT `fk_Appointment_FL_instructor_ID` FOREIGN KEY (`FL_instructor_ID`) REFERENCES `Flight_instructor` (`FL_instructor_ID`)
+  KEY `fk_FL_instructor_ID_idx` (`FL_instructor_ID`)
+--   CONSTRAINT `fk_Appointment_Student_ID` FOREIGN KEY (`Student_ID`) REFERENCES `Student` (`Student_ID`),
+--   CONSTRAINT `fk_Appointment_FL_instructor_ID` FOREIGN KEY (`FL_instructor_ID`) REFERENCES `Flight_instructor` (`FL_instructor_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `ST_availability` (
-  `Student_ID` varchar(45) NOT NULL,
+  `Student_ID` int unsigned NOT NULL,
   `Student_fname` varchar(25) NOT NULL,
   `Student_lname` varchar(25) NOT NULL,
-  PRIMARY KEY (`Appointment_ID`),
-  KEY `fk_Student_ID_idx` (`Student_ID`),
-  CONSTRAINT `fk_location_contact` FOREIGN KEY (`contact_id`) REFERENCES `contact` (`contact_id`)
+  `Student_avail` varchar(100) NOT NULL,
+  PRIMARY KEY (`Student_ID`),
+  KEY `fk_Student_ID_idx` (`Student_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `FL_availability` (
   `FL_instructor_ID` varchar(45) NOT NULL,
   `FL_fname` varchar(25) NOT NULL,
   `FL_lname` varchar(25) NOT NULL,
-  PRIMARY KEY (`Appointment_ID`),
+  `Student_avail` varchar(100) NOT NULL,
+  PRIMARY KEY (`FL_instructor_ID`),
   KEY `fk_FL_instructor_ID_idx` (`FL_instructor_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table contact
+-- Dumping data for table Flight_instructor
 --
+SET AUTOCOMMIT=0;
+INSERT INTO Flight_instructor VALUES
+(1, 'angel808', 'Password', 'Angel', 'Munoz', '8086525174', 'angel808munoz@gmail.com', 'Flight instructor for 2 years', '2020-10-14 10:34:00');
+COMMIT;
+--
+-- Dumping data for table Student
+--
+SET AUTOCOMMIT=0;
+INSERT INTO Student VALUES
+(1, 'jaredAZ', 'Password', 'Jared', 'Reed', '8088088080', 'jared@gmail.com', 'Flight student previously in the service', '2020-10-14 10:34:00');
+COMMIT;
+--
+-- Dumping data for table Plane
+--
+SET AUTOCOMMIT=0;
+INSERT INTO Appointment VALUES
+(1, 'N172', '', '2020-10-17 17:00-21:00');
+COMMIT;
+--
+-- Dumping data for table Appointment
+--
+SET AUTOCOMMIT=0;
+INSERT INTO Appointment VALUES
+(1,'PPL', 1, 'Jared', 'Reed', 1, 'Angel', 'Munoz', 1, '2020-10-17 17:00-21:00');
+COMMIT;
+--
+-- Dumping data for table ST_availability
+--
+SET AUTOCOMMIT=0;
+INSERT INTO ST_availability VALUES
+(1,'Jared', 'Reed', '2020-10-15 17:00-21:00, 2020-10-17 17:00-21:00, 2020-10-17 17:00-21:00');
+COMMIT;
+SET FOREIGN_KEY_CHECKS = 1;
+--
+-- Dumping data for table FL_availability
+--
+SET AUTOCOMMIT=0;
+INSERT INTO FL_availability VALUES
+(1,'Angel', 'Munoz', '2020-10-15 14:00-21:00, 2020-10-17 14:00-21:00, 2020-10-17 14:00-21:00');
+COMMIT;
+SET FOREIGN_KEY_CHECKS = 1;
