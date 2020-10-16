@@ -145,11 +145,11 @@ public class AppointmentBook {
 			PreparedStatement stmt = connection.prepareStatement(sql);
 
 			System.out.println("Student First Name : ");
-			String name = sc.next();
+			String Stud_fname = sc.next();
 			System.out.println("Student Last Name : ");
-			String last_name = sc.next();
+			String Stud_lname = sc.next();
 			System.out.println("Student ID : ");
-			int StudID = sc.nextInt();
+			int Stud_ID = sc.nextInt();
 			System.out.println("Flight Instructor First Name : ");
 			String FL_fname = sc.next();
 			System.out.println("Flight Instructor Last Name : ");
@@ -162,6 +162,18 @@ public class AppointmentBook {
 			int Plane_ID = sc.nextInt();
 			System.out.println("Appointment Date and Time : \nFormat : YYYY-MM-DD, HH:MM-HH:MM");
 			String dateTime = sc.next();
+			stmt = connection.prepareStatement(sql);
+			stmt.setInt(1, Stud_ID);
+			stmt.setString(2, Stud_fname);
+			stmt.setString(3, Stud_lname);
+			stmt.setString(4, FL_fname);
+			stmt.setString(5, FL_lname);
+			stmt.setInt(6, FL_ID);
+			stmt.setString(7, type);
+			stmt.setInt(8, Plane_ID);
+			stmt.setString(9, dateTime);
+			stmt.execute();
+
 			System.out.println("Add another Appointment? (Y/N)");
 			String ans = sc.next().toUpperCase();
 			if (ans.equals("N")) {
