@@ -119,31 +119,116 @@ public class AppointmentBook {
 
 	private static void ShowAppointments() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private static void addStudent() {
-		
+
 	}
 
 	public static void addAppointment() {
-		
+
 		boolean addAnother = true;
-		
+
 		System.out.println("****************************");
 		System.out.println("*** ADD APPOINTMENT ***");
 		System.out.println("****************************");
-		
+
 		do {
+			try {
+
+				String sql = "INSERT INTO Appointment " + "(Appointment_ID, Lesson_type, Student_ID, Student_fname, "
+						+ "Student_lname, FL_instructor_ID, FL_fname, FL_lname, Plane_ID, Date_Time) VALUES (?,?,?,?,?,?,?,?,?,?)";
+
+				PreparedStatement stmt = connection.prepareStatement(sql);
+
+				System.out.println("Student First Name : ");
+				String Stud_fname = sc.next();
+				System.out.println("Student Last Name : ");
+				String Stud_lname = sc.next();
+				System.out.println("Student ID : ");
+				int Stud_ID = sc.nextInt();
+				System.out.println("Flight Instructor First Name : ");
+				String FL_fname = sc.next();
+				System.out.println("Flight Instructor Last Name : ");
+				String FL_lname = sc.next();
+				System.out.println("Flight Instructor ID : ");
+				int FL_ID = sc.nextInt();
+				System.out.println("Lesson Type? (PPL || IR || ME) ");
+				String type = sc.next();
+				System.out.println("Plane ID : ");
+				int Plane_ID = sc.nextInt();
+				System.out.println("Appointment Date and Time : \nFormat : YYYY-MM-DD, HH:MM-HH:MM");
+				String dateTime = sc.next();
+				stmt = connection.prepareStatement(sql);
+				stmt.setInt(1, Stud_ID);
+				stmt.setString(2, Stud_fname);
+				stmt.setString(3, Stud_lname);
+				stmt.setString(4, FL_fname);
+				stmt.setString(5, FL_lname);
+				stmt.setInt(6, FL_ID);
+				stmt.setString(7, type);
+				stmt.setInt(8, Plane_ID);
+				stmt.setString(9, dateTime);
+				stmt.execute();
+
+				System.out.println("Add another Appointment? (Y/N)");
+				String ans = sc.next().toUpperCase();
+				if (ans.equals("N")) {
+					addAnother = false;
+				} else {
+					addAnother = true;
+				}
+
+			} catch (Exception e) {
+				System.out.println("Invalid input. Try again.");
+				addAppointment();
+			}
+		} while (addAnother == true);
+
+	}
+
+	public static void removeAppointment() {
+		boolean removeAnother = true;
 		try {
-			
-			
-			String sql = "INSERT INTO Appointment "
-					+ "(Appointment_ID, Lesson_type, Student_ID, Student_fname, "
-					+ "Student_lname, FL_instructor_ID, FL_fname, FL_lname, Plane_ID, Date_Time) VALUES (?,?,?,?,?,?,?,?,?,?)";
-
+			String sql = "SELECT Appointment_ID, Lesson_type, Student_ID, Student_fname, "
+					+ "Student_lname, FL_instructor_ID, FL_fname, FL_lname, " + "Plane_ID, Date_Time FROM Appointment";
+			System.out.println("Welcome!");
 			PreparedStatement stmt = connection.prepareStatement(sql);
+			ResultSet results = stmt.executeQuery();
+			while (results.next()) {
+				System.out.print(results.getInt("Appointment_ID") + ") ");
+				System.out.print("\t" + results.getString("Lesson_type") + " | ");
+				System.out.print("\t" + results.getInt("Student_ID") + " | ");
+				System.out.print("\t" + results.getString("Student_fname") + " ");
+				System.out.print("\t" + results.getString("Student_lname") + " | ");
+				System.out.print("\t" + results.getInt("Plane_ID") + "|");
+				System.out.print("\t" + results.getString("Date_Time") + "\n");
+			}
+			System.out.println("Which Appointment do you want to delete [THERE IS NO UNDO]?");
+			int id = sc.nextInt();
+			// DELETE a record from the table
+			sql = "DELETE FROM Appointment WHERE Appointment_ID = ?";
+			stmt = connection.prepareStatement(sql);
+			stmt.setInt(1, id);
+			stmt.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.print("Oops, try again!");
+			removeAppointment();
+		}
+	}
 
+	public static void changeAppointment() {
+		boolean AddAnother;
+		ShowAppointments();
+		System.out.println("********************");
+		System.out.println("*** EDIT APPOINTMENTS ***");
+		System.out.println("********************");
+		System.out.println("Which Appointment to edit : ");
+
+		int contactid = Integer.parseInt(sc.nextLine()) - 1;
+		try {
 			System.out.println("Student First Name : ");
 			String Stud_fname = sc.next();
 			System.out.println("Student Last Name : ");
@@ -162,6 +247,10 @@ public class AppointmentBook {
 			int Plane_ID = sc.nextInt();
 			System.out.println("Appointment Date and Time : \nFormat : YYYY-MM-DD, HH:MM-HH:MM");
 			String dateTime = sc.next();
+			String sql = "update Appointment set `Appointment_ID`='Stud_fname', Lesson_type, Student_ID, Student_fname, Student_lname, FL_instructor_ID, FL_fname, FL_lname, Plane_ID, Date_Time";
+					System.out.println("Welcome!");
+					PreparedStatement stmt = connection.prepareStatement(sql);
+					
 			stmt = connection.prepareStatement(sql);
 			stmt.setInt(1, Stud_ID);
 			stmt.setString(2, Stud_fname);
@@ -186,46 +275,9 @@ public class AppointmentBook {
 			System.out.println("Invalid input. Try again.");
 			addAppointment();
 		}
-		} while (addAnother == true);
-
-	}
-	
-	public static void removeAppointment() {
-		boolean removeAnother = true;
-		try {
-			String sql = "SELECT Appointment_ID, Lesson_type, Student_ID, Student_fname, "
-					+ "Student_lname, FL_instructor_ID, FL_fname, FL_lname, "
-					+ "Plane_ID, Date_Time FROM Appointment";
-			System.out.println("Welcome!");
-			PreparedStatement stmt = connection.prepareStatement(sql);
-			ResultSet results = stmt.executeQuery();
-			while (results.next()) {	
-				System.out.print(results.getInt("Appointment_ID") + ") ");
-				System.out.print("\t" + results.getString("Lesson_type") + " | ");
-				System.out.print("\t" + results.getInt("Student_ID") + " | ");
-				System.out.print("\t" + results.getString("Student_fname") + " ");
-				System.out.print("\t" + results.getString("Student_lname") + " | ");
-				System.out.print("\t" + results.getInt("Plane_ID") + "|");
-				System.out.print("\t" + results.getString("Date_Time") + "\n");
-			}
-			System.out.println("Which Appointment do you want to delete [THERE IS NO UNDO]?");
-			int id = sc.nextInt();
-			// DELETE a record from the table
-			sql = "DELETE FROM Appointment WHERE Appointment_ID = ?";
-			stmt = connection.prepareStatement(sql);
-			stmt.setInt(1, id);
-			stmt.execute();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.print("Oops, try again!");
-			removeAppointment();
-		}
+	} while (addAnother == true);
 	}
 
-	public static void changeAppointment() {
-
-	}
-	
 	public static void viewAppointments() {
 		int counter = 1;
 		System.out.println("***********************");
@@ -248,7 +300,7 @@ public class AppointmentBook {
 				System.out.print(results.getString("Student_fname") + " ");
 				System.out.print(results.getString("Student_lname") + " | ");
 				System.out.print(results.getInt("Plane_ID") + "|");
-				System.out.print(results.getString("Date_Time") + "\n");			
+				System.out.print(results.getString("Date_Time") + "\n");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -258,17 +310,14 @@ public class AppointmentBook {
 	}
 
 	public void deleteUser() {
-		
 
 	}
 
 	public void addUser() {
-		
 
 	}
 
 	public void editUser() {
-		
 
 	}
 
